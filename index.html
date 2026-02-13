@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>SHAHEEN INDOOR PRACTICE SESSION</title>
+	<style>
+		:root {
+			--navy: #0f2a43;
+			--teal: #1aa3b8;
+			--gold: #d9a441;
+			--light: #f6f8fb;
+			--dark: #0b1c2b;
+			--border: #d9e2ec;
+		}
+
+		* {
+			box-sizing: border-box;
+		}
+
+		body {
+			margin: 0;
+			font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+			color: var(--dark);
+			background: var(--light);
+		}
+
+		body.modal-open {
+			overflow: hidden;
+		}
+
+		header {
+			background: linear-gradient(135deg, var(--navy), #0b2136);
+			color: white;
+			padding: 28px 16px 20px;
+			text-align: center;
+			border-bottom: 4px solid var(--gold);
+		}
+
+		.logo-wrap {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			gap: 12px;
+			padding: 10px 14px;
+			background: white;
+			border-radius: 999px;
+			box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
+			margin-bottom: 12px;
+			border: 2px solid rgba(217, 164, 65, 0.6);
+			overflow: hidden;
+		}
+
+		.logo-crest {
+			width: 72px;
+			height: 72px;
+			object-fit: contain;
+			object-position: center;
+		}
+
+		.logo-wing {
+			width: 64px;
+			height: 64px;
+			object-fit: contain;
+			opacity: 0.95;
+		}
+
+		.logo-wrap.single {
+			gap: 0;
+			padding: 8px 14px;
+		}
+
+		.logo-wrap.single .logo-crest {
+			width: 86px;
+			height: 86px;
+		}
+
+		.logo-wrap img {
+			display: block;
+		}
+
+		.logo-fallback {
+			display: none;
+			font-weight: 800;
+			letter-spacing: 2px;
+			color: var(--navy);
+			font-size: 18px;
+			padding: 8px 18px;
+			border-radius: 999px;
+			border: 2px solid rgba(15, 42, 67, 0.2);
+		}
+
+		header h1 {
+			margin: 8px 0 6px;
+			font-size: clamp(22px, 3vw, 34px);
+			letter-spacing: 1px;
+			font-weight: 800;
+		}
+
+		header p {
+			margin: 0;
+			font-size: 14px;
+			opacity: 0.9;
+			letter-spacing: 0.4px;
+		}
+
+		main {
+			max-width: 1200px;
+			margin: 24px auto 40px;
+			padding: 0 16px;
+		}
+
+		.card {
+			background: white;
+			border-radius: 14px;
+			padding: 20px;
+			box-shadow: 0 10px 30px rgba(12, 32, 55, 0.08);
+			border: 1px solid var(--border);
+		}
+
+		.grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+			gap: 16px;
+		}
+
+		.section-title {
+			font-size: 16px;
+			font-weight: 700;
+			color: var(--navy);
+			margin: 6px 0 14px;
+			display: flex;
+			align-items: center;
+			gap: 8px;
+		}
+
+		.section-title::before {
+			content: "";
+			width: 10px;
+			height: 10px;
+			border-radius: 50%;
+			background: var(--gold);
+			display: inline-block;
+		}
+
+		label {
+			display: block;
+			font-weight: 600;
+			margin-bottom: 6px;
+			color: var(--navy);
+			font-size: 14px;
+		}
+
+		input,
+		textarea,
+		select {
+			width: 100%;
+			padding: 10px 12px;
+			border-radius: 10px;
+			border: 1px solid var(--border);
+			font-size: 14px;
+			outline: none;
+			transition: border 0.2s ease, box-shadow 0.2s ease;
+			background: #fff;
+		}
+
+		.time-input {
+			cursor: pointer;
+			background: #fff url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%230f2a43' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='9'/><path d='M12 7v6l4 2'/></svg>") no-repeat right 12px center;
+			padding-right: 40px;
+		}
+
+		.time-picker {
+			display: grid;
+			grid-template-columns: repeat(3, minmax(60px, 1fr));
+			gap: 8px;
+			background: #fff;
+			border: 1px solid var(--border);
+			border-radius: 12px;
+			padding: 10px;
+			position: relative;
+			box-shadow: inset 0 0 0 1px rgba(15, 42, 67, 0.04);
+		}
+
+		.time-picker::after {
+			content: "";
+			position: absolute;
+			left: 10px;
+			right: 10px;
+			top: 50%;
+			height: 38px;
+			transform: translateY(-50%);
+			border-radius: 10px;
+			background: rgba(15, 42, 67, 0.12);
+			border: 1px solid rgba(15, 42, 67, 0.18);
+			box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
+			pointer-events: none;
+		}
+
+		.time-picker::before {
+			content: "";
+			position: absolute;
+			inset: 10px;
+			border-radius: 12px;
+			background: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.2) 45%, rgba(255, 255, 255, 0.2) 55%, rgba(255, 255, 255, 0.9));
+			pointer-events: none;
+			mix-blend-mode: normal;
+		}
+
+		.time-modal {
+			position: fixed;
+			inset: 0;
+			background: rgba(11, 28, 43, 0.55);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			padding: 16px;
+			z-index: 2000;
+			opacity: 0;
+			pointer-events: none;
+			transition: opacity 0.2s ease;
+		}
+
+		.time-modal.open {
+			opacity: 1;
+			pointer-events: auto;
+		}
+
+		.time-modal-content {
+			background: #fff;
+			border-radius: 16px;
+			padding: 18px;
+			width: min(420px, 92vw);
+			box-shadow: 0 20px 50px rgba(8, 24, 40, 0.35);
+			border: 1px solid rgba(217, 164, 65, 0.4);
+		}
+
+		.time-modal-header {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			margin-bottom: 12px;
+		}
+
+		.time-modal-header h3 {
+			margin: 0;
+			font-size: 16px;
+			color: var(--navy);
+		}
+
+		.icon-btn {
+			border: none;
+			background: #f1f5f9;
+			color: var(--navy);
+			width: 32px;
+			height: 32px;
+			border-radius: 8px;
+			cursor: pointer;
+			font-weight: 700;
+		}
+
+		.time-modal-actions {
+			display: flex;
+			gap: 10px;
+			justify-content: flex-end;
+			margin-top: 14px;
+		}
+
+		.picker-column {
+			position: relative;
+			height: 170px;
+			overflow-y: auto;
+			scrollbar-width: none;
+			border-radius: 10px;
+			border: 1px solid #eef2f7;
+			background: #fbfdff;
+			scroll-snap-type: y mandatory;
+		}
+
+		.picker-column + .picker-column {
+			border-left: 1px solid #e6edf5;
+		}
+		.picker-column::-webkit-scrollbar {
+			width: 0;
+		}
+
+		.picker-column::-webkit-scrollbar-thumb {
+			background: rgba(15, 42, 67, 0.2);
+			border-radius: 99px;
+		}
+
+		.picker-list {
+			padding: 0;
+		}
+
+		.picker-item {
+			height: 38px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-weight: 600;
+			color: #6b7785;
+			font-size: 15px;
+			cursor: pointer;
+			user-select: none;
+			scroll-snap-align: center;
+			transition: color 0.2s ease, transform 0.2s ease;
+			line-height: 38px;
+		}
+
+		.picker-item.active {
+			color: #0b1c2b;
+			font-weight: 800;
+			transform: none;
+		}
+
+
+
+		input:focus,
+		textarea:focus {
+			border-color: var(--teal);
+			box-shadow: 0 0 0 3px rgba(26, 163, 184, 0.12);
+		}
+
+		textarea {
+			min-height: 150px;
+			resize: vertical;
+		}
+
+		.button-row {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 12px;
+			margin-top: 16px;
+		}
+
+		button {
+			border: none;
+			padding: 12px 16px;
+			border-radius: 10px;
+			font-weight: 700;
+			cursor: pointer;
+			transition: transform 0.15s ease, box-shadow 0.2s ease;
+			font-size: 14px;
+			appearance: none;
+			-webkit-appearance: none;
+		}
+
+		button:hover {
+			transform: translateY(-1px);
+			box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
+		}
+
+		button.primary {
+			background: var(--teal);
+			color: white;
+		}
+
+		button.secondary {
+			background: var(--navy);
+			color: white;
+		}
+
+		button.ghost {
+			background: #edf2f7;
+			color: var(--navy);
+		}
+
+		.message {
+			margin-top: 10px;
+			padding: 10px 12px;
+			border-radius: 10px;
+			background: #fff7e6;
+			color: #8a5a00;
+			border: 1px solid #ffe1a8;
+			font-size: 13px;
+			display: none;
+		}
+
+		.schedule-card {
+			margin-top: 22px;
+		}
+
+		.table-wrap {
+			overflow-x: auto;
+			margin-top: 12px;
+			-webkit-overflow-scrolling: touch;
+			width: 100%;
+			max-width: 100%;
+		}
+
+		table {
+			width: 100%;
+			border-collapse: collapse;
+			min-width: 720px;
+		}
+
+		thead th {
+			background: var(--navy);
+			color: white;
+			padding: 12px;
+			font-size: 14px;
+			position: sticky;
+			top: 0;
+			z-index: 1;
+		}
+
+		tbody td {
+			border: 1px solid var(--border);
+			padding: 10px 12px;
+			font-size: 14px;
+		}
+
+		tbody tr:nth-child(even) {
+			background: #f9fbfd;
+		}
+
+		tbody td[contenteditable="true"] {
+			background: #fffdf7;
+		}
+
+		.pill {
+			display: inline-block;
+			background: rgba(217, 164, 65, 0.15);
+			color: var(--navy);
+			padding: 4px 10px;
+			border-radius: 999px;
+			font-weight: 700;
+			font-size: 12px;
+		}
+
+		.summary {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 14px;
+			margin-top: 12px;
+			font-size: 13px;
+			color: var(--navy);
+		}
+
+		footer {
+			text-align: center;
+			padding: 20px 16px 30px;
+			color: #4b5b6b;
+			font-size: 13px;
+		}
+
+		footer strong {
+			color: var(--navy);
+		}
+
+		@media (max-width: 720px) {
+			header h1 {
+				font-size: 22px;
+			}
+
+			.logo-wrap {
+				padding: 8px 12px;
+				gap: 8px;
+			}
+
+			.logo-crest {
+				width: 58px;
+				height: 58px;
+			}
+
+			.logo-wing {
+				width: 52px;
+				height: 52px;
+			}
+		}
+
+		@media (max-width: 900px) {
+			main {
+				margin: 16px auto 32px;
+			}
+
+			.card {
+				padding: 16px;
+			}
+
+			.grid {
+				grid-template-columns: 1fr;
+			}
+
+			.button-row {
+				flex-direction: column;
+			}
+
+			.button-row button {
+				width: 100%;
+			}
+
+			.time-picker {
+				grid-template-columns: repeat(3, minmax(52px, 1fr));
+			}
+
+			.picker-column {
+				height: 150px;
+			}
+
+			.picker-item {
+				height: 36px;
+				font-size: 15px;
+			}
+		}
+	</style>
+</head>
+<body>
+	<header>
+		<div class="logo-wrap single" aria-label="Shaheen Cricket Club Logo">
+			<img class="logo-crest" id="logoCrest" src="Screenshot 2026-02-13 095553.png" alt="Shaheen Cricket Club crest" />
+			<img class="logo-wing" id="logoWing" src="shaheen-wing.png" alt="Shaheen Cricket Club wing" />
+			<span class="logo-fallback" id="logoFallback">SHAHEEN</span>
+		</div>
+		<h1>SHAHEEN INDOOR PRACTICE SESSION</h1>
+		<p>Organized | Fair | Professional Practice Management</p>
+	</header>
+
+	<main>
+		<section class="card">
+			<div class="section-title">Session Details</div>
+			<div class="grid">
+				<div>
+					<label for="practiceDate">Practice Date</label>
+					<input type="date" id="practiceDate" />
+				</div>
+				<div>
+					<label for="startTimeDisplay">Start Time</label>
+					<input class="time-input" type="text" id="startTimeDisplay" readonly value="09:00 PM" />
+				</div>
+				<div>
+					<label for="endTimeDisplay">End Time</label>
+					<input class="time-input" type="text" id="endTimeDisplay" readonly value="11:00 PM" />
+				</div>
+				<div>
+					<label for="sessionLead">Session Lead</label>
+					<input type="text" id="sessionLead" placeholder="Enter session lead" />
+				</div>
+			</div>
+
+			<div class="section-title" style="margin-top: 18px;">Practice Details</div>
+			<div class="grid">
+				<div>
+					<label for="lanes">Number of Lanes Booked</label>
+					<input type="number" id="lanes" min="1" value="3" />
+				</div>
+				<div style="grid-column: span 3;">
+					<label for="players">Players List (WhatsApp style)</label>
+					<textarea id="players" placeholder="Paste WhatsApp list here..."></textarea>
+				</div>
+			</div>
+
+			<div class="button-row">
+				<button class="primary" id="generateBtn">Generate Schedule</button>
+				<button class="ghost" id="resetBtn">Reset</button>
+				<button class="secondary" id="downloadBtn">Download Schedule as Excel</button>
+			</div>
+			<div class="message" id="messageBox"></div>
+		</section>
+
+		<section class="card schedule-card">
+			<div class="section-title">Generated Schedule</div>
+			<div class="summary" id="summary"></div>
+			<div class="table-wrap">
+				<table id="scheduleTable" aria-label="Practice schedule table">
+					<thead></thead>
+					<tbody></tbody>
+				</table>
+			</div>
+		</section>
+	</main>
+	
+	<div class="time-modal" id="timeModal" aria-hidden="true">
+		<div class="time-modal-content" role="dialog" aria-modal="true" aria-labelledby="timeModalTitle">
+			<div class="time-modal-header">
+				<h3 id="timeModalTitle">Select Time</h3>
+				<button class="icon-btn" type="button" id="timeModalClose">✕</button>
+			</div>
+			<div class="time-picker" id="timeModalPicker">
+				<div class="picker-column" data-part="hour"></div>
+				<div class="picker-column" data-part="minute"></div>
+				<div class="picker-column" data-part="period"></div>
+			</div>
+			<div class="time-modal-actions">
+				<button class="ghost" type="button" id="timeModalCancel">Cancel</button>
+				<button class="primary" type="button" id="timeModalApply">Apply</button>
+			</div>
+		</div>
+	</div>
+
+	<footer>
+		© Shaheen Cricket Club<br />
+		<strong>MADE BY ANIL KAKKAR</strong>
+	</footer>
+
+	<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+	<script>
+		const practiceDate = document.getElementById("practiceDate");
+		const startTimeDisplay = document.getElementById("startTimeDisplay");
+		const endTimeDisplay = document.getElementById("endTimeDisplay");
+		const timeModal = document.getElementById("timeModal");
+		const timeModalTitle = document.getElementById("timeModalTitle");
+		const timeModalClose = document.getElementById("timeModalClose");
+		const timeModalCancel = document.getElementById("timeModalCancel");
+		const timeModalApply = document.getElementById("timeModalApply");
+		const timeModalPicker = document.getElementById("timeModalPicker");
+		const sessionLead = document.getElementById("sessionLead");
+		const lanesInput = document.getElementById("lanes");
+		const playersInput = document.getElementById("players");
+		const generateBtn = document.getElementById("generateBtn");
+		const resetBtn = document.getElementById("resetBtn");
+		const downloadBtn = document.getElementById("downloadBtn");
+		const messageBox = document.getElementById("messageBox");
+		const scheduleTable = document.getElementById("scheduleTable");
+		const summaryBox = document.getElementById("summary");
+
+		let lastGenerated = false;
+		let activePickerKey = "start";
+		let isModalOpen = false;
+
+		const timeLineRegex = /(\d{1,2}(:\d{2})?\s*(am|pm)?\s*(-|–|—)\s*\d{1,2}(:\d{2})?\s*(am|pm)?)/i;
+		const dateLineRegex = /(mon|tue|wed|thu|fri|sat|sun|jan|feb|mar|apr|may|jun|jul|aug|sep|sept|oct|nov|dec|\d{1,2}\s*\/\s*\d{1,2})/i;
+
+		function showMessage(message) {
+			messageBox.textContent = message;
+			messageBox.style.display = "block";
+		}
+
+		function clearMessage() {
+			messageBox.textContent = "";
+			messageBox.style.display = "none";
+		}
+
+		function parsePlayers(text) {
+			return text
+				.split(/\r?\n/)
+				.map(line => line.trim())
+				.filter(line => line.length > 0)
+				.filter(line => !timeLineRegex.test(line))
+				.filter(line => !dateLineRegex.test(line))
+				.map(line => line.replace(/^\s*[\d]+[\).\-\s]+/, ""))
+				.map(line => line.replace(/^[-•]+\s*/, ""))
+				.map(line => line.trim())
+				.filter(line => line.length > 0);
+		}
+
+		function formatTime(date) {
+			const hours = date.getHours();
+			const minutes = date.getMinutes();
+			const period = hours >= 12 ? "PM" : "AM";
+			const displayHour = hours % 12 === 0 ? 12 : hours % 12;
+			return `${displayHour}:${String(minutes).padStart(2, "0")} ${period}`;
+		}
+
+		function buildTableHead(lanes) {
+			const thead = scheduleTable.querySelector("thead");
+			thead.innerHTML = "";
+			const row = document.createElement("tr");
+			const timeTh = document.createElement("th");
+			timeTh.textContent = "Time Slot";
+			row.appendChild(timeTh);
+			for (let i = 1; i <= lanes; i += 1) {
+				const th = document.createElement("th");
+				th.textContent = `Lane ${i}`;
+				row.appendChild(th);
+			}
+			thead.appendChild(row);
+		}
+
+		function buildTableBody(slots, players, lanes, startDate, endDate) {
+			const tbody = scheduleTable.querySelector("tbody");
+			tbody.innerHTML = "";
+
+			const totalMs = endDate - startDate;
+			const slotMs = totalMs / slots;
+
+			let playerIndex = 0;
+			for (let slot = 0; slot < slots; slot += 1) {
+				const row = document.createElement("tr");
+				const slotStart = new Date(startDate.getTime() + slotMs * slot);
+				const slotEnd = slot === slots - 1 ? endDate : new Date(startDate.getTime() + slotMs * (slot + 1));
+
+				const timeCell = document.createElement("td");
+				timeCell.textContent = `${formatTime(slotStart)} – ${formatTime(slotEnd)}`;
+				timeCell.setAttribute("contenteditable", "true");
+				row.appendChild(timeCell);
+
+				for (let lane = 0; lane < lanes; lane += 1) {
+					const cell = document.createElement("td");
+					cell.setAttribute("contenteditable", "true");
+					const player = players[playerIndex];
+					cell.textContent = player || "";
+					playerIndex += 1;
+					row.appendChild(cell);
+				}
+				tbody.appendChild(row);
+			}
+		}
+
+		function updateSummary(players, lanes, totalMinutes) {
+			const slots = Math.ceil(players.length / lanes);
+			const minutesPerSlot = totalMinutes / slots;
+			const hours = Math.floor(totalMinutes / 60);
+			const minutes = totalMinutes % 60;
+			summaryBox.innerHTML = "";
+
+			const items = [
+				`Players: <span class=\"pill\">${players.length}</span>`,
+				`Lanes: <span class=\"pill\">${lanes}</span>`,
+				`Slots: <span class=\"pill\">${slots}</span>`,
+				`Session Length: <span class=\"pill\">${hours}h ${minutes}m</span>`,
+				`Per Slot: <span class=\"pill\">${minutesPerSlot.toFixed(1)} min</span>`
+			];
+
+			items.forEach(item => {
+				const div = document.createElement("div");
+				div.innerHTML = item;
+				summaryBox.appendChild(div);
+			});
+		}
+
+		function generateSchedule() {
+			clearMessage();
+
+			const lanes = parseInt(lanesInput.value, 10);
+			const players = parsePlayers(playersInput.value);
+			const dateValue = practiceDate.value;
+			const startValue = getTimeValue("start");
+			const endValue = getTimeValue("end");
+
+			if (!startValue || !endValue) {
+				showMessage("Please select both start and end time.");
+				return;
+			}
+
+			if (!lanes || lanes < 1) {
+				showMessage("Please enter a valid lane count (minimum 1).");
+				return;
+			}
+
+			if (!players.length) {
+				showMessage("Please paste at least one player name.");
+				return;
+			}
+
+			const datePart = dateValue || new Date().toISOString().slice(0, 10);
+			const startDate = new Date(`${datePart}T${startValue}`);
+			const endDate = new Date(`${datePart}T${endValue}`);
+
+			if (!(startDate instanceof Date) || isNaN(startDate)) {
+				showMessage("Start time is invalid.");
+				return;
+			}
+
+			if (!(endDate instanceof Date) || isNaN(endDate)) {
+				showMessage("End time is invalid.");
+				return;
+			}
+
+			if (endDate <= startDate) {
+				showMessage("End time must be after start time.");
+				return;
+			}
+
+			const slots = Math.ceil(players.length / lanes);
+			buildTableHead(lanes);
+			buildTableBody(slots, players, lanes, startDate, endDate);
+
+			const totalMinutes = Math.round((endDate - startDate) / 60000);
+			updateSummary(players, lanes, totalMinutes);
+
+			lastGenerated = true;
+		}
+
+		function resetForm() {
+			practiceDate.value = "";
+			pickerState.start = { hour: "09", minute: "00", period: "PM" };
+			pickerState.end = { hour: "11", minute: "00", period: "PM" };
+			updateTimeDisplays();
+			sessionLead.value = "";
+			lanesInput.value = "3";
+			playersInput.value = "";
+			scheduleTable.querySelector("thead").innerHTML = "";
+			scheduleTable.querySelector("tbody").innerHTML = "";
+			summaryBox.innerHTML = "";
+			clearMessage();
+			lastGenerated = false;
+		}
+
+		function downloadExcel() {
+			clearMessage();
+			if (typeof XLSX === "undefined") {
+				showMessage("Excel export library failed to load. Please check your internet connection and try again.");
+				return;
+			}
+			const rows = scheduleTable.querySelectorAll("tbody tr");
+			if (!rows.length) {
+				showMessage("Please generate a schedule before exporting.");
+				return;
+			}
+
+			const workbook = XLSX.utils.book_new();
+			const data = [];
+			const headerCells = scheduleTable.querySelectorAll("thead th");
+			const headerRow = Array.from(headerCells).map(cell => cell.textContent.trim());
+			data.push(headerRow);
+
+			rows.forEach(row => {
+				const cells = row.querySelectorAll("td");
+				const rowData = Array.from(cells).map(cell => cell.textContent.trim());
+				data.push(rowData);
+			});
+
+			const worksheet = XLSX.utils.aoa_to_sheet(data);
+			const colWidths = headerRow.map((header, index) => {
+				const maxLen = Math.max(...data.map(row => (row[index] || "").length), header.length);
+				return { wch: Math.min(Math.max(maxLen + 2, 12), 35) };
+			});
+			worksheet["!cols"] = colWidths;
+
+			const formattedDate = practiceDate.value ? practiceDate.value : "Session";
+			const rawSheetName = `Shaheen Indoor Practice ${formattedDate}`;
+			const safeSheetName = rawSheetName.replace(/[\\/?*\[\]:]/g, "-").slice(0, 31);
+			const safeFileName = rawSheetName.replace(/[^a-z0-9\- _]/gi, "").trim() || "Shaheen Indoor Practice";
+			XLSX.utils.book_append_sheet(workbook, worksheet, safeSheetName);
+			XLSX.writeFile(workbook, `${safeFileName}.xlsx`);
+		}
+
+		generateBtn.addEventListener("click", generateSchedule);
+		resetBtn.addEventListener("click", resetForm);
+		downloadBtn.addEventListener("click", downloadExcel);
+
+		const hourOptions = Array.from({ length: 12 }, (_, i) => String(i + 1).padStart(2, "0"));
+		const minuteOptions = Array.from({ length: 60 }, (_, i) => String(i).padStart(2, "0"));
+		const periodOptions = ["AM", "PM"];
+		const ITEM_HEIGHT = 38;
+		const pickerState = {
+			start: { hour: "09", minute: "00", period: "PM" },
+			end: { hour: "11", minute: "00", period: "PM" }
+		};
+
+		function renderPickerColumn(column, values, partKey) {
+			const list = document.createElement("div");
+			list.className = "picker-list";
+			values.forEach(value => {
+				const item = document.createElement("div");
+				item.className = "picker-item";
+				item.textContent = value;
+				item.dataset.value = value;
+				item.addEventListener("click", () => {
+					setPickerValue(column, activePickerKey, partKey, value, true);
+					centerItemInColumn(column, item, "smooth");
+				});
+				list.appendChild(item);
+			});
+			column.innerHTML = "";
+			column.appendChild(list);
+		}
+
+		function centerItemInColumn(column, item, behavior = "auto") {
+			const columnRect = column.getBoundingClientRect();
+			const itemRect = item.getBoundingClientRect();
+			const delta = (itemRect.top + itemRect.height / 2) - (columnRect.top + columnRect.height / 2);
+			column.scrollTo({ top: column.scrollTop + delta, behavior });
+		}
+
+		function setPickerValue(column, pickerKey, partKey, value, shouldScroll) {
+			pickerState[pickerKey][partKey] = value;
+			const items = column.querySelectorAll(".picker-item");
+			items.forEach(item => {
+				item.classList.toggle("active", item.dataset.value === value);
+			});
+			if (shouldScroll) {
+				const activeItem = Array.from(items).find(item => item.dataset.value === value);
+				if (activeItem) {
+					centerItemInColumn(column, activeItem, "smooth");
+				}
+			}
+			if (lastGenerated && !isModalOpen) {
+				generateSchedule();
+			}
+		}
+
+		function syncPickerScroll(column, partKey) {
+			const items = column.querySelectorAll(".picker-item");
+			const list = column.querySelector(".picker-list");
+			const paddingTop = list ? parseFloat(getComputedStyle(list).paddingTop) : 0;
+			const centerOffset = column.clientHeight / 2 - ITEM_HEIGHT / 2;
+			const index = Math.max(0, Math.min(items.length - 1, Math.round((column.scrollTop + centerOffset - paddingTop) / ITEM_HEIGHT)));
+			const value = items[index]?.dataset.value;
+			if (value && pickerState[activePickerKey][partKey] !== value) {
+				setPickerValue(column, activePickerKey, partKey, value, false);
+			}
+		}
+
+		const pickerColumns = {
+			hour: timeModalPicker.querySelector("[data-part='hour']"),
+			minute: timeModalPicker.querySelector("[data-part='minute']"),
+			period: timeModalPicker.querySelector("[data-part='period']")
+		};
+
+		function initModalPicker() {
+			renderPickerColumn(pickerColumns.hour, hourOptions, "hour");
+			renderPickerColumn(pickerColumns.minute, minuteOptions, "minute");
+			renderPickerColumn(pickerColumns.period, periodOptions, "period");
+
+			[pickerColumns.hour, pickerColumns.minute, pickerColumns.period].forEach(column => {
+				const list = column.querySelector(".picker-list");
+				const padding = column.clientHeight / 2 - ITEM_HEIGHT / 2;
+				if (list) {
+					list.style.paddingTop = `${padding}px`;
+					list.style.paddingBottom = `${padding}px`;
+				}
+				column.style.scrollPaddingTop = `${padding}px`;
+				column.style.scrollPaddingBottom = `${padding}px`;
+			});
+
+			[pickerColumns.hour, pickerColumns.minute, pickerColumns.period].forEach(column => {
+				let scrollTimeout;
+				column.addEventListener("scroll", () => {
+					clearTimeout(scrollTimeout);
+					scrollTimeout = setTimeout(() => {
+						syncPickerScroll(column, column.dataset.part);
+					}, 80);
+				});
+			});
+		}
+
+		function syncModalToState(pickerKey, shouldScroll) {
+			setPickerValue(pickerColumns.hour, pickerKey, "hour", pickerState[pickerKey].hour, shouldScroll);
+			setPickerValue(pickerColumns.minute, pickerKey, "minute", pickerState[pickerKey].minute, shouldScroll);
+			setPickerValue(pickerColumns.period, pickerKey, "period", pickerState[pickerKey].period, shouldScroll);
+		}
+
+		function getTimeValue(pickerKey) {
+			const { hour, minute, period } = pickerState[pickerKey];
+			let hour24 = parseInt(hour, 10) % 12;
+			if (period === "PM") {
+				hour24 += 12;
+			}
+			return `${String(hour24).padStart(2, "0")}:${minute}`;
+		}
+
+		function formatDisplayTime(pickerKey) {
+			const { hour, minute, period } = pickerState[pickerKey];
+			return `${hour}:${minute} ${period}`;
+		}
+
+		function updateTimeDisplays() {
+			startTimeDisplay.value = formatDisplayTime("start");
+			endTimeDisplay.value = formatDisplayTime("end");
+		}
+
+		function openTimeModal(pickerKey) {
+			activePickerKey = pickerKey;
+			isModalOpen = true;
+			timeModalTitle.textContent = pickerKey === "start" ? "Select Start Time" : "Select End Time";
+			timeModal.classList.add("open");
+			timeModal.setAttribute("aria-hidden", "false");
+			document.body.classList.add("modal-open");
+			setTimeout(() => {
+				[pickerColumns.hour, pickerColumns.minute, pickerColumns.period].forEach(column => {
+					const list = column.querySelector(".picker-list");
+					const padding = column.clientHeight / 2 - ITEM_HEIGHT / 2;
+					if (list) {
+						list.style.paddingTop = `${padding}px`;
+						list.style.paddingBottom = `${padding}px`;
+					}
+					column.style.scrollPaddingTop = `${padding}px`;
+					column.style.scrollPaddingBottom = `${padding}px`;
+				});
+				syncModalToState(pickerKey, true);
+			}, 0);
+		}
+
+		function closeTimeModal() {
+			isModalOpen = false;
+			timeModal.classList.remove("open");
+			timeModal.setAttribute("aria-hidden", "true");
+			document.body.classList.remove("modal-open");
+		}
+
+		function applyTimeModal() {
+			updateTimeDisplays();
+			closeTimeModal();
+			if (lastGenerated) {
+				generateSchedule();
+			}
+		}
+
+		const autoFields = [practiceDate, sessionLead, lanesInput, playersInput];
+		autoFields.forEach(field => {
+			field.addEventListener("change", () => {
+				if (lastGenerated) {
+					generateSchedule();
+				}
+			});
+		});
+
+		startTimeDisplay.addEventListener("click", () => openTimeModal("start"));
+		endTimeDisplay.addEventListener("click", () => openTimeModal("end"));
+		startTimeDisplay.addEventListener("keydown", event => {
+			if (event.key === "Enter" || event.key === " ") {
+				event.preventDefault();
+				openTimeModal("start");
+			}
+		});
+		endTimeDisplay.addEventListener("keydown", event => {
+			if (event.key === "Enter" || event.key === " ") {
+				event.preventDefault();
+				openTimeModal("end");
+			}
+		});
+
+		timeModalClose.addEventListener("click", closeTimeModal);
+		timeModalCancel.addEventListener("click", closeTimeModal);
+		timeModalApply.addEventListener("click", applyTimeModal);
+		timeModal.addEventListener("click", event => {
+			if (event.target === timeModal) {
+				closeTimeModal();
+			}
+		});
+
+		initModalPicker();
+		updateTimeDisplays();
+		window.addEventListener("resize", () => {
+			[pickerColumns.hour, pickerColumns.minute, pickerColumns.period].forEach(column => {
+				const list = column.querySelector(".picker-list");
+				const padding = column.clientHeight / 2 - ITEM_HEIGHT / 2;
+				if (list) {
+					list.style.paddingTop = `${padding}px`;
+					list.style.paddingBottom = `${padding}px`;
+				}
+				column.style.scrollPaddingTop = `${padding}px`;
+				column.style.scrollPaddingBottom = `${padding}px`;
+			});
+		});
+
+		const logoCrest = document.getElementById("logoCrest");
+		const logoWing = document.getElementById("logoWing");
+		const logoFallback = document.getElementById("logoFallback");
+		function checkLogoImages() {
+			const crestOk = logoCrest.complete && logoCrest.naturalWidth > 0;
+			const wingOk = logoWing.complete && logoWing.naturalWidth > 0;
+			logoCrest.style.display = crestOk ? "block" : "none";
+			logoWing.style.display = wingOk ? "block" : "none";
+			logoFallback.style.display = (!crestOk && !wingOk) ? "block" : "none";
+		}
+		logoCrest.addEventListener("error", checkLogoImages);
+		logoWing.addEventListener("error", checkLogoImages);
+		logoCrest.addEventListener("load", checkLogoImages);
+		logoWing.addEventListener("load", checkLogoImages);
+		checkLogoImages();
+	</script>
+</body>
+</html>
